@@ -1,0 +1,183 @@
+/* --- CONFIGURAÇÃO GLOBAL E RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    background: #000; /* Fundo preto total */
+    color: #fff; /* Texto branco */
+    font-family: "Segoe UI", sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    
+    display: flex;
+    justify-content: center;
+    padding-top: 5vh;
+}
+
+/* --- CONTÊINER PRINCIPAL --- */
+.register-page {
+    width: 100%;
+    max-width: 450px; /* Largura máxima para o box */
+    padding: 20px;
+    text-align: center;
+}
+
+/* --- HEADER (Logo) --- */
+header {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.logo-area {
+    display: flex;
+    justify-content: center; /* Centraliza o logo */
+}
+
+.logo-img {
+    height: 200px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* --- CONTEÚDO PRINCIPAL (Título e Box) --- */
+.register-content h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* --- Barras de Progresso (Novo) --- */
+.progress-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+.progress-bar .step {
+    width: 35px;
+    height: 4px;
+    background: #444; /* Cor inativa */
+    border-radius: 2px;
+}
+.progress-bar .step.active {
+    background: #0066cc; /* Cor ativa */
+}
+
+
+/* --- Caixa de Registro --- */
+.register-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+}
+
+.form-grupo {
+    margin-bottom: 15px;
+}
+
+.input-form {
+    width: 100%;
+    height: 55px;
+    padding: 0 16px;
+    font-size: 1rem;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 10px;
+    color: #333;
+}
+.input-form:focus {
+    outline: 2px solid #0066cc;
+}
+
+/* --- Input com Ícone (Novo) --- */
+.input-icon-wrapper {
+    position: relative;
+    width: 100%;
+}
+.input-icon-wrapper .input-form {
+    padding-right: 50px; /* Espaço para o ícone */
+}
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none; /* Não deixa o ícone ser clicável */
+}
+
+
+/* --- AÇÕES (Botões) --- */
+.action-buttons {
+    display: flex;
+    flex-direction: column; /* Empilhados no mobile */
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px 35px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+/* Botão Primário (Azul) */
+.btn-primary {
+    background-color: #0066cc;
+    color: white;
+    border: 2px solid #0066cc;
+}
+.btn-primary:hover {
+    background-color: #005bb5;
+}
+
+/* Botão Secundário (Vazado) */
+.btn-secondary {
+    background-color: #fff;
+    color: #0066cc;
+    border: 2px solid #0066cc;
+}
+.btn-secondary:hover {
+    background-color: #f8f8f8;
+}
+
+
+/* --- MEDIA QUERY (DESKTOP) --- */
+@media (min-width: 768px) {
+
+    body {
+        align-items: center;
+        padding-top: 0;
+    }
+
+    .register-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .register-box {
+        padding: 40px;
+    }
+
+    /* Botões lado a lado no desktop */
+    .action-buttons {
+        flex-direction: row;
+    }
+
+    .btn {
+        width: 100%; /* O flex-grow fará o ajuste */
+    }
+}

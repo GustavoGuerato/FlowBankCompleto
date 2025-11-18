@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank - Cadastro</title>
+    <link rel="stylesheet" href="Cadastro PT1.css" />
+</head>
+
+<body>
+    
+    <div class="register-page">
+
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo Flow Bank">
+            </div>
+        </header>
+
+        <main class="register-content">
+            <h1>VAMOS COMEÇAR?</h1>
+            
+            <div class="progress-bar">
+                <div class="step active"></div>
+                <div class="step"></div>
+                </div>
+
+            <div class="register-box">
+                <form>
+                    <div class="form-grupo">
+                        <input type="text" class="input-form" placeholder="Nome Completo" required>
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="text" class="input-form" placeholder="CPF" required>
+                    </div>
+
+                    <div class="form-grupo">
+                        <div class="input-icon-wrapper">
+                            <input type="text" class="input-form" placeholder="Data De Nascimento" 
+                                   onfocus="(this.type='date')" 
+                                   onblur="if(!this.value) { (this.type='text') }">
+                            <img src="../Imagem/calendario-icon.png" class="input-icon" alt="Calendário">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a href="#" class="btn btn-secondary">Voltar</a>
+                        <button type="submit" class="btn btn-primary">Avançar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+    </div> </body>
+</html>

@@ -1,0 +1,270 @@
+/* --- CONFIGURAÇÃO GLOBAL E RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    background: #fff;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.homepage {
+    background: #fff;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER --- */
+header {
+    background: #000;
+    padding: 20px;
+    color: white;
+}
+
+.logo-area {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-img { height: 60px; width: auto; object-fit: contain; }
+.redondo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #ffffff33; }
+
+/* --- LAYOUT PRINCIPAL --- */
+.conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.coluna-esquerda, .coluna-direita {
+    flex: 1;
+    width: 100%;
+}
+
+/* --- COLUNA ESQUERDA --- */
+.saldo-container {
+    padding: 20px;
+    background-color: #f3f4f7;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+.saldo-titulo { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; }
+#eye-icon { width: 25px; height: 25px; cursor: pointer; }
+#saldo-valor { font-size: 2.5rem; font-weight: 600; margin-top: 8px; }
+
+/* Filtros Laterais */
+.filtros-container {
+    display: flex;
+    flex-direction: column; /* Botões um embaixo do outro */
+    gap: 10px;
+}
+.filtro-btn {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 1rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.filtro-btn:hover {
+    background: #f9f9f9;
+    border-color: #ddd;
+}
+.filtro-btn.ativo {
+    background: #eaf0ff;
+    color: #0066cc;
+    border-color: #0066cc;
+    font-weight: 600;
+}
+
+
+/* --- COLUNA DIREITA (EXTRATO) --- */
+.extrato-container {
+    padding: 20px;
+    background: #fff;
+    /* Removido border/shadow para ficar clean como o layout anterior */
+}
+
+.extrato-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.extrato-header h2 { font-size: 1.8rem; }
+
+.btn-exportar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Grupos de Data */
+.data-grupo {
+    margin-bottom: 30px;
+}
+.data-label {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Item de Transação */
+.transacao-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+.transacao-item:hover {
+    background-color: #fafafa;
+    padding-left: 10px; /* Efeito de movimento leve */
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    border-radius: 8px;
+}
+.transacao-item:last-child {
+    border-bottom: none;
+}
+
+/* Ícone da transação */
+.transacao-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+.transacao-icon-wrapper img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+}
+
+/* Cores de fundo para categorias */
+.icone-compras { background-color: #ffebee; } /* Vermelho claro */
+.icone-pix { background-color: #e8f5e9; } /* Verde claro */
+.icone-servico { background-color: #e3f2fd; } /* Azul claro */
+.icone-transporte { background-color: #fff3e0; } /* Laranja claro */
+.icone-restaurante { background-color: #f3e5f5; } /* Roxo claro */
+
+.transacao-info {
+    flex: 1;
+}
+.transacao-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+}
+.transacao-info span {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.transacao-valor {
+    font-weight: 600;
+    font-size: 1rem;
+}
+.valor-saida { color: #333; } /* Padrão escuro */
+.valor-entrada { color: #00c853; } /* Verde */
+
+
+/* --- MEDIA QUERY (DESKTOP) --- */
+@media (min-width: 900px) {
+    header {
+        padding: 0 60px;
+        height: 100px;
+        /* Uma altura fixa menor no desktop */
+    }
+
+    .logo-area {
+        height: 100%;
+    }
+
+    .logo-img {
+        height: 200px;
+    }
+
+    .redondo {
+        width: 70px;
+        height: 70px;
+    }
+
+    .conteudo {
+        flex-direction: row;
+        gap: 60px;
+        padding: 40px 60px;
+        align-items: flex-start;
+    }
+
+    .coluna-esquerda { flex: 0 0 30%; }
+    .coluna-direita { flex: 1; }
+    
+    /* Filtros em linha no mobile, coluna no desktop? 
+       No CSS acima já deixei coluna padrão. Se quiser mudar: */
+    .filtros-container {
+        margin-top: 20px;
+    }
+}
+
+/* Efeito ao passar o mouse */
+.btn-voltar:hover {
+    background-color: #e9ebee; /* Fica levemente mais escuro */
+}
+
+
+/* --- BOTÃO VOLTAR (Novo) --- */
+.btn-voltar {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f7;
+    border: 1px solid #eee;
+    border-radius: 50%; /* Circular */
+    font-size: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    margin-bottom: 20px; /* Espaço entre botão e saldo */
+    transition: background-color 0.2s;
+}
+.btn-voltar:hover {
+    background-color: #e9ebee;
+}

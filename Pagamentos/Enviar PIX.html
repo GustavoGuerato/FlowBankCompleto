@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank - Enviar PIX</title>
+    <link rel="stylesheet" href="Enviar PIX.css">
+</head>
+
+<body>
+    <div class="homepage">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo">
+                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+            </div>
+        </header>
+
+        <main class="conteudo">
+            <section class="coluna-esquerda">
+                <div class="saldo-container">
+                    <div class="saldo-titulo">
+                        <h2>Saldo</h2>
+                        <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/512/709/709612.png"
+                            alt="Ocultar Saldo">
+                    </div>
+                    <p id="saldo-valor">R$ 0,00</p>
+                </div>
+            </section>
+
+            <section class="coluna-direita">
+                <div class="pix-form-container">
+                    <h2>Enviar Pix</h2>
+                    <form id="pix-form">
+                        <div class="form-grupo">
+                            <label for="chave-pix">Digite a chave pix:</label>
+                            <input type="text" id="chave-pix" class="input-pix" placeholder="Digite o Código" required>
+                        </div>
+
+                        <div class="form-grupo">
+                            <label for="valor-pix">Valor:</label>
+                            <input type="number" id="valor-pix" class="input-pix" placeholder="R$ 0,00" required>
+                        </div>
+
+                        <button type="submit" class="btn-avancar">Avançar</button>
+                    </form>
+                    <p id="pix-status"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const saldo = document.getElementById("saldo-valor");
+        const eye = document.getElementById("eye-icon");
+        let visivel = true;
+
+        const token = localStorage.getItem("token"); // JWT armazenado no login
+        const API_URL = "http://localhost:8080"; // URL do backend
+
+        async function fetchBalance() {
+            try {
+                const res = await fetch(`${API_URL}/bank/balance`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    const errText = await res.text();
+                    saldo.textContent = errText.includes("<html") ? "Erro de Conexão" : `Erro: ${errText}`;
+                    return;
+                }
+                const data = await res.json();
+                saldo.textContent = `R$ ${parseFloat(data.balance).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            } catch (err) {
+                console.error(err);
+                saldo.textContent = "Erro ao carregar saldo";
+            }
+        }
+
+        eye.onclick = () => {
+            visivel = !visivel;
+            if (visivel) {
+                fetchBalance();
+                eye.src = "https://cdn-icons-png.flaticon.com/512/709/709612.png";
+            } else {
+                saldo.textContent = "R$ ••••••";
+                eye.src = "https://cdn-icons-png.flaticon.com/512/565/565655.png";
+            }
+        };
+
+        fetchBalance();
+
+        const form = document.getElementById("pix-form");
+        const status = document.getElementById("pix-status");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const toEmail = document.getElementById("chave-pix").value;
+            const amount = parseFloat(document.getElementById("valor-pix").value);
+
+            const transferData = { toEmail, amount };
+
+            try {
+                const res = await fetch(`${API_URL}/bank/transfer`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(transferData)
+                });
+
+                const text = await res.text();
+                status.textContent = text;
+
+                if (res.ok) {
+                    localStorage.setItem("transferData", JSON.stringify(transferData));
+                    fetchBalance();
+                    status.textContent = "PIX enviado com sucesso! Redirecionando...";
+                    setTimeout(() => {
+                        window.location.href = "Pagamento_Realizado.html";
+                    }, 1000);
+                }
+            } catch (err) {
+                console.error(err);
+                status.textContent = "Erro na transferência";
+            }
+        });
+    </script>
+</body>
+
+</html>

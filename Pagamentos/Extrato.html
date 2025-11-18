@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank - Extrato</title>
+    <link rel="stylesheet" href="Extrato.css" />
+</head>
+
+<body>
+    <div class="homepage">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo Flow Bank">
+                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+            </div>
+        </header>
+
+        <main class="conteudo">
+
+            <section class="coluna-esquerda">
+
+                <a href="#" class="btn-voltar" aria-label="Voltar">
+                    &larr;
+                </a>
+
+                <div class="saldo-container">
+                    <div class="saldo-titulo">
+                        <h2>Saldo Disponível</h2>
+                        <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/512/709/709612.png"
+                            alt="Ocultar Saldo">
+                    </div>
+                    <p id="saldo-valor">R$ 0,00</p>
+                </div>
+
+            </section>
+
+            <section class="coluna-direita">
+
+                <div class="extrato-container">
+                    <div class="extrato-header">
+                        <h2>Extrato Recente</h2>
+                        <button class="btn-exportar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" width="16"> Exportar
+                        </button>
+                    </div>
+
+                    <div id="extrato-lista"></div>
+
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const saldo = document.getElementById("saldo-valor");
+        const eye = document.getElementById("eye-icon");
+        let visivel = true;
+
+        eye.onclick = () => {
+            visivel = !visivel;
+            saldo.textContent = visivel ? saldo.dataset.real : "••••••••";
+            eye.src = visivel
+                ? "https://cdn-icons-png.flaticon.com/512/709/709612.png"
+                : "https://cdn-icons-png.flaticon.com/512/565/565655.png";
+        };
+
+        // Recupere o token do localStorage (ajuste se necessário)
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("Você não está logado!");
+        }
+
+        // ================================
+        // 🔥 CARREGAR SALDO
+        // ================================
+        async function carregarSaldo() {
+            const response = await fetch("http://localhost:8080/bank/balance", {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            const data = await response.json();
+
+            saldo.dataset.real = data.balance.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+
+            saldo.textContent = saldo.dataset.real;
+        }
+
+        // ================================
+        // 🔥 CARREGAR EXTRATO
+        // ================================
+        async function carregarExtrato() {
+            const response = await fetch("http://localhost:8080/bank/extract", {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            const transacoes = await response.json();
+            const extratoDiv = document.getElementById("extrato-lista");
+
+            // Agrupar por data
+            const grupos = {};
+
+            transacoes.forEach(t => {
+                const data = new Date(t.timestamp);
+                const dia = data.toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                });
+
+                if (!grupos[dia]) grupos[dia] = [];
+                grupos[dia].push(t);
+            });
+
+            extratoDiv.innerHTML = "";
+
+            Object.keys(grupos).forEach(dia => {
+                const bloco = document.createElement("div");
+                bloco.classList.add("data-grupo");
+
+                bloco.innerHTML = `<h3 class="data-label">${dia}</h3>`;
+
+                grupos[dia].forEach(t => {
+                    const entrada = t.type === "entrada";
+
+                    bloco.innerHTML += `
+                        <div class="transacao-item">
+                            <div class="transacao-icon-wrapper icone-pix">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1019/1019607.png" alt="">
+                            </div>
+                            <div class="transacao-info">
+                                <h4>${t.description}</h4>
+                                <span>${entrada ? "Recebido" : "Enviado"}</span>
+                            </div>
+                            <div class="transacao-valor ${entrada ? "valor-entrada" : "valor-saida"}">
+                                ${entrada ? "+" : "-"} 
+                                ${Math.abs(t.amount).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                extratoDiv.appendChild(bloco);
+            });
+        }
+
+        carregarSaldo();
+        carregarExtrato();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank</title>
+    <link rel="stylesheet" href="Home.css" />
+</head>
+
+<body>
+    <div class="homepage">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo">
+                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+            </div>
+        </header>
+
+        <main class="conteudo">
+            <section class="coluna-esquerda">
+                <p class="ola">Olá,<br><span id="nome-usuario" class="nome">Carregando...</span></p>
+
+                <div class="saldo-container">
+                    <div class="saldo-titulo">
+                        <h2>Saldo</h2>
+                        <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/512/709/709612.png">
+                    </div>
+                    <p id="saldo-valor">R$ 0,00</p>
+                    <button class="btn-transferencia"><a
+                            href="../Pagamentos/Enviar PIX.html">Transferências</a></button>
+                </div>
+
+                <div class="rendimentos">
+                    <div class="card-rendimento">Seu <span class="texto-azul"><a href="Cotacao.html">informe de
+                                rendimentos
+                                2025</a></span> já está
+                        disponível</div>
+                    <div class="card-rendimento">Seu <span class="texto-azul">informe de rendimentos 2024</span> já está
+                        disponível</div>
+                </div>
+            </section>
+
+            <section class="coluna-direita">
+                <h2>Cartão de crédito</h2>
+                <div class="divisor"></div>
+
+                <div class="cartao">
+                    <img class="logo-cartao" src="../Imagem/Logo.png" alt="Logo">
+                    <p class="num-cartao">**** **** **** 6943</p>
+                    <div class="cartao-info">
+                        <div>
+                            <p class="info-label">Nome Impresso no Cartão: <b id="nome-cartao">Carregando...</b></p>
+                        </div>
+                        <div>
+                            <p class="info-label">Validade: <b id="validade-cartao">10/28</b></p>
+                        </div>
+                        <div>
+                            <p class="info-label">CVC: <b id="cvc-cartao">871</b></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="MeuLimiteConsumido">
+                    <div class="item1">
+                        <p>Fatura Atual</p>
+                        <span id="valor-fatura"><b class="valor-vermelho">R$ 0,00</b></span>
+                    </div>
+                    <div class="item2">
+                        <p>Limite Consumido</p> <span id="limite-consumido">R$ 0,00</span>
+                    </div>
+                    <div class="item3">
+                        <p>Limite Atual</p>
+                        <span id="limite-atual">R$ 0,00</span>
+                    </div>
+                    <div class="quanto">
+                        <p>Quanto posso gastar?</p> <span id="valor-restante">R$ 0,00</span>
+                        <div class="barra">
+                            <div class="progresso" id="barra-progresso"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="simulador-gasto">
+                    <label>Simular gasto:</label>
+                    <input type="number" id="valor-gasto" placeholder="Digite o valor...">
+                    <button id="simular" class="simular">Aplicar</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // ELEMENTOS
+        const nomeUsuario = document.getElementById("nome-usuario");
+        const nomeCartao = document.getElementById("nome-cartao");
+        const saldoEl = document.getElementById("saldo-valor");
+        const eye = document.getElementById("eye-icon");
+
+        const limiteConsumidoEl = document.getElementById("limite-consumido");
+        const valorRestanteEl = document.getElementById("valor-restante");
+        const barra = document.getElementById("barra-progresso");
+        const valorFatura = document.getElementById("valor-fatura");
+        const limiteAtualEl = document.getElementById("limite-atual");
+        const campoGasto = document.getElementById("valor-gasto");
+        const botaoSimular = document.getElementById("simular");
+
+        let visivel = true;
+        let saldoAtual = 0;
+        let limiteTotal = 0;
+        let consumido = 0;
+
+        // --- Função para formatar valores em BRL ---
+        function formatar(valor) {
+            return valor.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+        }
+
+        // --- Alternar visibilidade do saldo ---
+        eye.onclick = () => {
+            visivel = !visivel;
+            saldoEl.textContent = visivel ? "R$ " + formatar(saldoAtual) : "••••••••";
+            eye.src = visivel
+                ? "https://cdn-icons-png.flaticon.com/512/709/709612.png"
+                : "https://cdn-icons-png.flaticon.com/512/565/565655.png";
+        };
+
+        // --- Puxando dados do backend ---
+        async function carregarDados() {
+            const token = localStorage.getItem("token");
+            const emailSalvo = localStorage.getItem("email");
+
+            // Nome do usuário
+            if (emailSalvo) {
+                const nomeExtraido = emailSalvo.split("@")[0].split(".").map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(" ");
+                nomeUsuario.textContent = nomeExtraido;
+                nomeCartao.textContent = nomeExtraido;
+            } else {
+                nomeUsuario.textContent = "Usuário";
+                nomeCartao.textContent = "Usuário";
+            }
+
+            if (!token) return;
+
+            try {
+                const response = await fetch("http://localhost:8080/bank/balance", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                if (!response.ok) throw new Error("Erro ao carregar saldo");
+
+                const data = await response.json();
+                saldoAtual = data.balance;
+                limiteTotal = data.limit || 4500;
+                consumido = data.consumed || 300;
+
+                atualizarValores();
+            } catch (err) {
+                console.error(err);
+                saldoEl.textContent = "Erro";
+            }
+        }
+
+        // --- Atualiza valores do cartão ---
+        function atualizarValores() {
+            if (consumido > limiteTotal) consumido = limiteTotal;
+            let restante = limiteTotal - consumido;
+
+            saldoEl.textContent = visivel ? "R$ " + formatar(saldoAtual) : "••••••••";
+            limiteConsumidoEl.textContent = "R$ " + formatar(consumido);
+            limiteAtualEl.textContent = "R$ " + formatar(limiteTotal);
+            valorRestanteEl.textContent = "R$ " + formatar(restante);
+            barra.style.width = (consumido / limiteTotal) * 100 + "%";
+            valorFatura.innerHTML = '<b class="valor-vermelho">R$ ' + formatar(consumido) + '</b>';
+        }
+
+        // --- Simulador de gasto ---
+        botaoSimular.onclick = () => {
+            let valor = Number(campoGasto.value.replace(",", "."));
+            if (valor > 0) {
+                consumido += valor;
+                atualizarValores();
+                campoGasto.value = "";
+            }
+        };
+
+        // --- Inicializa ---
+        carregarDados();
+    </script>
+</body>
+
+</html>

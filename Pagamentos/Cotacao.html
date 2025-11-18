@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank - Cotações</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/css/flag-icons.min.css" />
+    <link rel="stylesheet" href="Cotacao.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="homepage">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo Flow Bank">
+                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+            </div>
+        </header>
+
+        <main class="conteudo">
+
+            <section class="coluna-esquerda">
+                <a href="#" class="btn-voltar" aria-label="Voltar">&larr; </a>
+
+                <div class="saldo-container">
+                    <div class="saldo-titulo">
+                        <h2>Saldo Disponível</h2>
+                        <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/512/709/709612.png"
+                            alt="Ocultar Saldo">
+                    </div>
+                    <p id="saldo-valor">••••••••</p>
+                </div>
+            </section>
+
+            <section class="coluna-direita">
+
+                <div class="market-container">
+                    <div class="market-header">
+                        <h2>Cotações em Tempo Real</h2>
+                        <span class="live-badge">● Ao vivo</span>
+                    </div>
+
+                    <h3 class="section-title">Moedas</h3>
+                    <div class="currency-grid">
+
+                        <!-- USD -->
+                        <div class="currency-card" data-type="currency" data-symbol="USD" data-name="Dólar Comercial">
+                            <div class="currency-icon-wrapper">
+                                <span class="fi fi-us currency-flag"></span>
+                            </div>
+                            <div class="currency-info">
+                                <h4>Dólar Comercial</h4>
+                                <span class="currency-code">USD/BRL</span>
+                            </div>
+                            <div class="currency-values">
+                                <span id="usd-price" class="price">—</span>
+                                <span id="usd-var" class="variation">—</span>
+                            </div>
+                        </div>
+
+                        <!-- EUR -->
+                        <div class="currency-card" data-type="currency" data-symbol="EUR" data-name="Euro">
+                            <div class="currency-icon-wrapper">
+                                <span class="fi fi-eu currency-flag"></span>
+                            </div>
+                            <div class="currency-info">
+                                <h4>Euro</h4>
+                                <span class="currency-code">EUR/BRL</span>
+                            </div>
+                            <div class="currency-values">
+                                <span id="eur-price" class="price">—</span>
+                                <span id="eur-var" class="variation">—</span>
+                            </div>
+                        </div>
+
+                        <!-- GBP -->
+                        <div class="currency-card" data-type="currency" data-symbol="GBP" data-name="Libra Esterlina">
+                            <div class="currency-icon-wrapper">
+                                <span class="fi fi-gb currency-flag"></span>
+                            </div>
+                            <div class="currency-info">
+                                <h4>Libra Esterlina</h4>
+                                <span class="currency-code">GBP/BRL</span>
+                            </div>
+                            <div class="currency-values">
+                                <span id="gbp-price" class="price">—</span>
+                                <span id="gbp-var" class="variation">—</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="divisor"></div>
+
+                    <h3 class="section-title">Criptomoedas</h3>
+
+                    <div class="currency-grid">
+
+                        <!-- BTC -->
+                        <div class="currency-card" data-type="crypto" data-symbol="bitcoin" data-name="Bitcoin">
+                            <div class="currency-icon-wrapper">
+                                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968260.png" class="crypto-icon"
+                                    alt="BTC">
+                            </div>
+                            <div class="currency-info">
+                                <h4>Bitcoin</h4>
+                                <span class="currency-code">BTC</span>
+                            </div>
+                            <div class="currency-values">
+                                <span id="btc-price" class="price">—</span>
+                                <span id="btc-var" class="variation">—</span>
+                            </div>
+                        </div>
+
+                        <!-- ETH -->
+                        <div class="currency-card" data-type="crypto" data-symbol="ethereum" data-name="Ethereum">
+                            <div class="currency-icon-wrapper">
+                                <img src="https://cdn-icons-png.flaticon.com/512/6001/6001368.png" class="crypto-icon"
+                                    alt="ETH">
+                            </div>
+                            <div class="currency-info">
+                                <h4>Ethereum</h4>
+                                <span class="currency-code">ETH</span>
+                            </div>
+                            <div class="currency-values">
+                                <span id="eth-price" class="price">—</span>
+                                <span id="eth-var" class="variation">—</span>
+                            </div>
+                        </div>
+
+                        <!-- SOL -->
+                        <div class="currency-card" data-type="crypto" data-symbol="solana" data-name="Solana">
+                            <div class="currency-icon-wrapper">
+                                <img src="https://cryptologos.cc/logos/solana-sol-logo.png" class="crypto-icon"
+                                    alt="SOL">
+                            </div>
+                            <div class="currency-info">
+                                <h4>Solana</h4>
+                                <span class="currency-code">SOL</span>
+                            </div>
+                            <div class="currency-values">
+                                <span id="sol-price" class="price">—</span>
+                                <span id="sol-var" class="variation">—</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for graph -->
+    <div id="graphModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="graphTitle"></h2>
+            <canvas id="priceChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- ================================
+                 JAVASCRIPT
+    ================================= -->
+    <script>
+        // ================================
+        // SALDO - Backend FlowBank
+        // ================================
+        async function carregarSaldo() {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                document.getElementById("saldo-valor").textContent = "Erro";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:8080/bank/balance", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar saldo");
+                }
+
+                const data = await response.json();
+                const saldoElement = document.getElementById("saldo-valor");
+
+                saldoElement.textContent = `R$ ${Number(data.balance).toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2
+                })}`;
+
+            } catch (e) {
+                console.error("Erro ao carregar saldo:", e);
+            }
+        }
+
+        // ================================
+        // API Pública - Moedas (Frankfurter)
+        // ================================
+        async function atualizarMoedas() {
+            const url = "https://api.frankfurter.app/latest?from=BRL&to=USD,EUR,GBP";
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const usd = (1 / data.rates.USD).toFixed(2);
+                const eur = (1 / data.rates.EUR).toFixed(2);
+                const gbp = (1 / data.rates.GBP).toFixed(2);
+
+                document.getElementById("usd-price").textContent = `R$ ${usd}`;
+                document.getElementById("eur-price").textContent = `R$ ${eur}`;
+                document.getElementById("gbp-price").textContent = `R$ ${gbp}`;
+
+                // Variação real
+                atualizarVariacao("USD", usd, "usd-var");
+                atualizarVariacao("EUR", eur, "eur-var");
+                atualizarVariacao("GBP", gbp, "gbp-var");
+
+            } catch (e) {
+                console.error("Erro moedas:", e);
+            }
+        }
+
+        // ================================
+        // Variação diária
+        // ================================
+        async function atualizarVariacao(sigla, precoAtual, idVar) {
+            try {
+                const ontem = new Date();
+                ontem.setDate(ontem.getDate() - 1);
+                const dataOntem = ontem.toISOString().split("T")[0];
+
+                const url = `https://api.frankfurter.app/${dataOntem}?from=BRL&to=${sigla}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (!data.rates) return;
+
+                const precoOntem = (1 / data.rates[sigla]).toFixed(2);
+                const variacao = (((precoAtual - precoOntem) / precoOntem) * 100).toFixed(2);
+
+                document.getElementById(idVar).textContent =
+                    `${variacao >= 0 ? "▲" : "▼"} ${variacao}%`;
+
+            } catch (e) {
+                document.getElementById(idVar).textContent = "—";
+            }
+        }
+
+        // ================================
+        // API Pública - Criptomoedas
+        // ================================
+        async function atualizarCriptos() {
+            const url =
+                "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=brl&include_24hr_change=true";
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                function formatar(idPrice, idVar, obj) {
+                    document.getElementById(idPrice).textContent =
+                        `R$ ${obj.brl.toLocaleString("pt-BR")}`;
+                    document.getElementById(idVar).textContent =
+                        `${obj.brl_24h_change >= 0 ? "▲" : "▼"} ${obj.brl_24h_change.toFixed(2)}%`;
+                }
+
+                formatar("btc-price", "btc-var", data.bitcoin);
+                formatar("eth-price", "eth-var", data.ethereum);
+                formatar("sol-price", "sol-var", data.solana);
+
+            } catch (e) {
+                console.error("Erro criptos:", e);
+            }
+        }
+
+        // ================================
+        // INICIALIZAR
+        // ================================
+        function atualizarTudo() {
+            carregarSaldo();
+            atualizarMoedas();
+            atualizarCriptos();
+        }
+
+        atualizarTudo();
+        setInterval(atualizarTudo, 60000);
+
+        // ================================
+        // Mostrar/Ocultar saldo
+        // ================================
+        const saldo = document.getElementById("saldo-valor");
+        const eye = document.getElementById("eye-icon");
+        let visivel = true;
+
+        eye.onclick = () => {
+            visivel = !visivel;
+            if (visivel) {
+                carregarSaldo();
+                eye.src = "https://cdn-icons-png.flaticon.com/512/709/709612.png";
+            } else {
+                saldo.textContent = "••••••••";
+                eye.src = "https://cdn-icons-png.flaticon.com/512/565/565655.png";
+            }
+        };
+
+        // ================================
+        // Gráfico nas moedas
+        // ================================
+        const modal = document.getElementById("graphModal");
+        const closeBtn = document.getElementsByClassName("close")[0];
+        let chartInstance;
+
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+            if (chartInstance) chartInstance.destroy();
+        };
+
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                if (chartInstance) chartInstance.destroy();
+            }
+        };
+
+        document.querySelectorAll('.currency-card').forEach(card => {
+            card.addEventListener('click', async () => {
+                const type = card.dataset.type;
+                const symbol = card.dataset.symbol;
+                const name = card.dataset.name;
+
+                document.getElementById('graphTitle').textContent = `Gráfico das últimas 2 semanas: ${name}`;
+                modal.style.display = "block";
+
+                let labels = [];
+                let prices = [];
+
+                if (type === 'currency') {
+                    // Frankfurter API for currencies
+                    const endDate = new Date().toISOString().split('T')[0];
+                    const startDate = new Date();
+                    startDate.setDate(startDate.getDate() - 14);
+                    const startStr = startDate.toISOString().split('T')[0];
+
+                    const url = `https://api.frankfurter.app/${startStr}..${endDate}?from=BRL&to=${symbol}`;
+                    try {
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        for (const date in data.rates) {
+                            labels.push(date);
+                            prices.push(1 / data.rates[date][symbol]);
+                        }
+                    } catch (e) {
+                        console.error("Erro gráfico moeda:", e);
+                    }
+                } else if (type === 'crypto') {
+                    // CoinGecko API for cryptos
+                    const url = `https://api.coingecko.com/api/v3/coins/${symbol}/market_chart?vs_currency=brl&days=14`;
+                    try {
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        data.prices.forEach(([timestamp, price]) => {
+                            labels.push(new Date(timestamp).toLocaleDateString());
+                            prices.push(price);
+                        });
+                    } catch (e) {
+                        console.error("Erro gráfico crypto:", e);
+                    }
+                }
+
+                const ctx = document.getElementById('priceChart').getContext('2d');
+                if (chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Preço (R$)',
+                            data: prices,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

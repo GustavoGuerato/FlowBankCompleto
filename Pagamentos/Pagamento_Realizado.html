@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Bank - Pagamento Realizado</title>
+    <link rel="stylesheet" href="Pagamento Realizado.css">
+</head>
+
+<body>
+    <div class="homepage">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo">
+                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+            </div>
+        </header>
+
+        <main class="conteudo-centralizado">
+            <div class="recibo-container">
+                <div class="recibo-header">
+                    <img class="recibo-check" src="../Imagem/PagamentoRealizado.png" alt="Check de Sucesso">
+                    <h2 class="recibo-titulo">Pagamento<br> Realizado</h2>
+                </div>
+
+                <div class="recibo-detalhes">
+                    <div class="detalhe-item">
+                        <span class="label">Valor da Transferência:</span>
+                        <span class="valor-grande">R$ 0,00</span>
+                    </div>
+
+                    <div class="detalhe-item">
+                        <span class="label">Para:</span>
+                        <span class="valor valor-recipient">---</span>
+                    </div>
+                </div>
+
+                <div class="recibo-acoes">
+                    <button class="btn-secundario" onclick="compartilhar()">
+                        <img class="icone-btn" src="../Imagem/compartilhar.png" alt="Compartilhar">
+                        <span>Compartilhar</span>
+                    </button>
+                    <button class="btn-primario" onclick="voltarInicio()">Voltar ao Início</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Usuário não autenticado!");
+            window.location.href = "login.html";
+        }
+
+        const transferData = JSON.parse(localStorage.getItem("transferData"));
+        if (!transferData) {
+            alert("Dados da transferência não encontrados!");
+            window.location.href = "home.html";
+        }
+
+        // Exibir dados da transferência
+        document.querySelector(".valor-grande").innerText = `R$ ${transferData.amount.toFixed(2)}`;
+        document.querySelector(".valor-recipient").innerText = transferData.toEmail;
+
+        // Funções dos botões
+        function compartilhar() {
+            alert("Função de compartilhar não implementada.");
+        }
+
+        function voltarInicio() {
+            window.location.href = "home.html";
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+/* --- CONFIGURAÇÃO GLOBAL E RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background: #000; /* Fundo preto total */
+    color: #fff; /* Texto branco */
+    font-family: "Segoe UI", sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    
+    /* Centraliza o contêiner principal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- CONTÊINER PRINCIPAL --- */
+.welcome-container {
+    width: 100%;
+    max-width: 550px; /* Largura máxima para o box */
+    padding: 30px;
+    text-align: center;
+    
+    /* Organiza header, main e footer */
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER (Logo) --- */
+header {
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.logo-area {
+    display: flex;
+    justify-content: center; /* Centraliza o logo */
+}
+
+.logo-com-subtitulo {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinha o subtítulo no centro */
+}
+
+.logo-img {
+    height: 200px; /* Logo um pouco maior */
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-subtitulo {
+    font-size: 0.75rem;
+    color: #ccc;
+    letter-spacing: 0.5px;
+    margin-top: -5px;
+}
+
+/* --- CONTEÚDO PRINCIPAL (Texto e Imagem) --- */
+.welcome-content h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.welcome-content p {
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.welcome-illustration {
+    width: 100%;
+    max-width: 380px; /* Tamanho máximo da ilustração */
+    height: auto;
+    margin-bottom: 40px;
+}
+
+/* --- AÇÕES (Botões) --- */
+.action-buttons {
+    display: flex;
+    flex-direction: column; /* Botões empilhados no mobile */
+    gap: 15px;
+    width: 100%;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+/* No seu modelo, os dois botões são azuis */
+.btn-primary,
+.btn-secondary {
+    background-color: #0066cc;
+    color: white;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+    background-color: #005bb5;
+}
+
+
+/* --- MEDIA QUERY (DESKTOP) --- */
+@media (min-width: 768px) {
+
+    .welcome-content h1 {
+        font-size: 2.5rem; /* Título maior no desktop */
+    }
+
+    /* Botões lado a lado no desktop */
+    .action-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .btn {
+        width: auto; /* Largura automática */
+        min-width: 150px;
+    }
+}

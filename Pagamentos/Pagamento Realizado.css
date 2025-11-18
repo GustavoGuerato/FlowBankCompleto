@@ -1,0 +1,217 @@
+/* --- CONFIGURAÇÃO GLOBAL E RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    background: #fff;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.homepage {
+    background: #fff;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER (Padrão) --- */
+header {
+    background: #000;
+    padding: 20px;
+    color: white;
+}
+
+.logo-area {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.redondo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff33;
+}
+
+/* --- NOVO LAYOUT: CONTEÚDO CENTRALIZADO --- */
+.conteudo-centralizado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center; /* Centraliza horizontalmente */
+    padding: 30px 20px; /* Espaçamento */
+    flex-grow: 1; /* Ocupa o espaço restante */
+    width: 100%;
+}
+
+/* --- ESTILO DO RECIBO --- */
+.recibo-container {
+    width: 100%;
+    max-width: 500px; /* Largura máxima do recibo */
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+}
+
+.recibo-header {
+    margin-bottom: 30px;
+}
+
+.recibo-check {
+    width: 80px;
+    height: 80px;
+}
+
+.recibo-titulo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #009c4f; /* Verde para sucesso */
+    margin-top: 15px;
+    line-height: 1.2;
+}
+
+/* --- Detalhes do Recibo --- */
+.recibo-detalhes {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.detalhe-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+.detalhe-item:first-child {
+    padding-top: 0;
+}
+.detalhe-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.label {
+    font-size: 1rem;
+    color: #555;
+}
+
+.valor {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.valor-grande {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #007BFF; /* Destaque azul no valor */
+}
+
+
+/* --- Botões de Ação --- */
+.recibo-acoes {
+    display: flex;
+    flex-direction: column; /* Coluna no mobile */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Botão de "Voltar" (Primário) */
+.btn-primario {
+    width: 100%;
+    background-color: #0066cc;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-primario:hover {
+    background-color: #005bb5;
+}
+
+/* Botão de "Compartilhar" (Secundário) */
+.btn-secundario {
+    width: 100%;
+    background-color: #eaf0ff;
+    color: #0066cc;
+    padding: 12px;
+    border: 1px solid #0066cc;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+.btn-secundario:hover {
+    background-color: #dbe7ff;
+}
+
+.icone-btn {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* --- MEDIA QUERY (DESKTOP) --- */
+@media (min-width: 900px) {
+
+    /* Header */
+    header {
+        padding: 0 60px;
+        height: 100px;
+        /* Uma altura fixa menor no desktop */
+    }
+
+    .logo-area {
+        height: 100%;
+    }
+
+    .logo-img {
+        height: 200px;
+    }
+
+    .redondo {
+        width: 70px;
+        height: 70px;
+    }
+
+    /* Ações do Recibo lado a lado no desktop */
+    .recibo-acoes {
+        flex-direction: row;
+    }
+
+    .btn-primario, .btn-secundario {
+        flex: 1; /* Faz os dois botões terem a mesma largura */
+    }
+}

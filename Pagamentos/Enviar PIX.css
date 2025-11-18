@@ -1,0 +1,323 @@
+/* --- CONFIGURAÇÃO GLOBAL E RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    background: #fff; /* Fundo branco padrão */
+    font-family: "Segoe UI", sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.homepage {
+    background: #fff;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER (Padrão) --- */
+header {
+    background: #000;
+    padding: 20px;
+    color: white;
+}
+
+.logo-area {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.redondo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff33;
+}
+
+/* --- CONTEÚDO PRINCIPAL (Mobile-First) --- */
+.conteudo {
+    display: flex;
+    /* Começa como coluna (mobile) */
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px; /* Padding menor para mobile */
+    width: 100%;
+    max-width: 1400px; /* Largura máxima para o layout */
+    margin: 0 auto; /* Centraliza o conteúdo */
+}
+
+.coluna-esquerda,
+.coluna-direita {
+    flex: 1;
+    width: 100%;
+}
+
+/* --- COLUNA ESQUERDA: SALDO --- */
+.saldo-container {
+    padding: 20px;
+    background-color: #f3f4f7;
+    border-radius: 12px;
+}
+.saldo-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+}
+
+#eye-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+#saldo-valor {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+/* --- COLUNA ESQUERDA: OPÇÕES PIX --- */
+.opcoes-pix {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar a linha em telas pequenas */
+    gap: 15px; /* Espaçamento entre ícones */
+    margin-top: 30px;
+    justify-content: space-between; /* Distribui no mobile */
+}
+
+.acao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+    /* Define um tamanho base para cada item */
+    flex-basis: 80px; /* Cada item tenta ter 80px */
+    flex-grow: 1; /* Permite que cresçam para preencher espaço */
+}
+
+.icone {
+    width: 80px; /* Ícones menores e mais gerenciáveis */
+    height: 80px;
+    background: #f2f3f5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    box-shadow: 0px 4px 10px #0000001a;
+    transition: transform 0.2s;
+}
+.icone:hover {
+    transform: translateY(-5px);
+}
+
+.icone img {
+    width: 40%; /* Imagem dentro do ícone */
+    height: 40%;
+    object-fit: contain;
+}
+
+/* --- COLUNA ESQUERDA: CONTATOS --- */
+.contatos-container {
+    margin-top: 40px;
+}
+.contatos-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.lista-contatos {
+    display: grid;
+    /* 1 coluna no mobile */
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.contato-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+}
+
+.icone-contato {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.contato-info {
+    flex: 1;
+}
+
+.nome-contato {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.banco-contato {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* --- COLUNA DIREITA: FORMULÁRIO PIX --- */
+.pix-form-container {
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #eee;
+}
+
+.pix-form-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+}
+
+.form-grupo {
+    margin-bottom: 20px;
+}
+
+.form-grupo label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.input-pix {
+    width: 100%;
+    height: 50px;
+    padding: 0 16px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #fff;
+    outline: none;
+    color: #007BFF;
+}
+.input-pix:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+.btn-avancar {
+    width: 100%; /* Botão 100% no mobile */
+    text-align: center;
+    margin-top: 20px;
+    background-color: #0066cc;
+    color: white;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-avancar:hover {
+    background-color: #005bb5;
+}
+
+/* --- MEDIA QUERY (DESKTOP) --- */
+/* Quando a tela for MAIOR que 900px... */
+
+@media (min-width: 900px) {
+
+    /* Header */
+     header {
+        padding: 0 60px;
+        height: 100px;
+        /* Uma altura fixa menor no desktop */
+    }
+
+    .logo-area {
+        height: 100%;
+    }
+
+    .logo-img {
+        height: 200px;
+    }
+
+    .redondo {
+        width: 70px;
+        height: 70px;
+    }
+
+    /* Conteúdo */
+    .conteudo {
+        flex-direction: row; /* Vira linha (side-by-side) */
+        gap: 60px;
+        padding: 40px 60px;
+        align-items: flex-start; /* Alinha no topo */
+    }
+
+    /* Coluna da esquerda ocupa 60% */
+    .coluna-esquerda {
+        flex: 0 0 60%;
+    }
+
+    /* Coluna da direita ocupa 40% */
+    .coluna-direita {
+        flex: 1;
+        /* Adiciona a linha divisória que você tinha, mas de forma responsiva */
+        border-left: 2px solid #f0f0f0;
+        padding-left: 60px;
+        /* Faz o formulário "grudar" no topo ao rolar */
+        position: sticky;
+        top: 40px; 
+    }
+
+    .opcoes-pix {
+        justify-content: flex-start; /* Alinha à esquerda no desktop */
+        gap: 25px;
+    }
+    
+    .acao {
+        flex-basis: 100px; /* Ícones um pouco maiores no desktop */
+    }
+
+    .icone {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Contatos em 2 colunas no desktop */
+    .lista-contatos {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .btn-avancar {
+        width: auto; /* Tamanho automático no desktop */
+        float: right; /* Alinha à direita */
+    }
+}

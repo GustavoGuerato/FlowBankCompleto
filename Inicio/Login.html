@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank - Login</title>
+    <link rel="stylesheet" href="Login.css" />
+</head>
+
+<body>
+    <div class="login-page">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Portrait_Placeholder.png" alt="Logo Flow Bank">
+            </div>
+        </header>
+
+        <main class="login-content">
+            <h1>Bem-vindo(a) de volta!</h1>
+            <div class="login-box">
+                <form id="loginForm">
+                    <div class="form-grupo">
+                        <input type="email" id="email" class="input-form" placeholder="E-Mail" required>
+                    </div>
+                    <div class="form-grupo">
+                        <input type="password" id="password" class="input-form" placeholder="Senha" required>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="register.html" class="btn btn-secondary">Cadastrar</a>
+                        <button type="submit" class="btn btn-primary">ENTRAR</button>
+                    </div>
+                    <p id="error" style="color:red; display:none;"></p>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const error = document.getElementById('error');
+
+            try {
+                const res = await fetch('http://localhost:8080/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('email', email);
+                    window.location.href = '../pagamentos/home.html';  // ← caminho relativo
+                } else {
+                    error.textContent = data.message || 'Erro no login';
+                    error.style.display = 'block';
+                }
+            } catch (err) {
+                error.textContent = 'Erro de conexão';
+                error.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>
