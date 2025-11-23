@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Bank - Pagamento</title>
+    <link rel="stylesheet" href="Pagamento.css" />
+</head>
+
+<body>
+    <div class="homepage">
+        <header>
+            <div class="logo-area">
+                <img class="logo-img" src="../Imagem/Logo.png" alt="Logo Flow Bank">
+                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+            </div>
+        </header>
+
+        <main class="conteudo">
+
+            <section class="coluna-esquerda">
+
+                <div class="saldo-container">
+                    <div class="saldo-titulo">
+                        <h2>Saldo</h2>
+                        <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/512/709/709612.png"
+                            alt="Ocultar Saldo">
+                    </div>
+                    <p id="saldo-valor">R$ 10.300,00</p>
+                </div>
+
+                <div class="opcoes-pix">
+                    <div class="acao">
+                        <div class="icone"> <a href="./Enviar PIX.html">
+                        <img src="../Imagem/pix.png" alt="Pix"> </a></div>
+                        <span>Pix</span>
+                    </div>
+                    <div class="acao">
+                        <div class="icone"> <img src="../Imagem/Pix Agendado.png" alt="Pix Agendado"> </div>
+                        <span>Pix agendado</span>
+                    </div>
+                    <div class="acao">
+                        <div class="icone"> <img src="../Imagem/copia e cola.png" alt="Pix Copia e Cola"> </div>
+                        <span>Pix Copia e Cola</span>
+                    </div>
+                    <div class="acao">
+                        <div class="icone"> <img src="../Imagem/pagar.png" alt="Pagar"> </div>
+                        <span>Pagar</span>
+                    </div>
+                    <div class="acao">
+                        <div class="icone"> <img src="../Imagem/trasnferir.png" alt="Transferir"> </div>
+                        <span>Transferir</span>
+                    </div>
+                </div>
+
+                <div class="contatos-container">
+                    <h2>Meus Contatos</h2>
+                    <div class="lista-contatos">
+                        <div class="contato-card">
+                            <img class="icone-contato" src="../Imagem/icone1.png" alt="Foto de perfil">
+                            <div class="contato-info">
+                                <h3 class="nome-contato">Lucas Justo</h3>
+                                <p class="banco-contato">Banco Itau</p>
+                            </div>
+                        </div>
+                        <div class="contato-card">
+                            <img class="icone-contato" src="../Imagem/icone2.png" alt="Foto de perfil">
+                            <div class="contato-info">
+                                <h3 class="nome-contato">Cristiano Ronaldo</h3>
+                                <p class="banco-contato">Banco do Brasil</p>
+                            </div>
+                        </div>
+                        <div class="contato-card">
+                            <img class="icone-contato" src="../Imagem/icone3.png" alt="Foto de perfil">
+                            <div class="contato-info">
+                                <h3 class="nome-contato">Tifanny Guerato</h3>
+                                <p class="banco-contato">Santander</p>
+                            </div>
+                        </div>
+                        <div class="contato-card">
+                            <img class="icone-contato" src="../Imagem/icone4.png" alt="Foto de perfil">
+                            <div class="contato-info">
+                                <h3 class="nome-contato">Madison Beer</h3>
+                                <p class="banco-contato">Santander</p>
+                            </div>
+                        </div>
+                        <div class="contato-card">
+                            <img class="icone-contato" src="../Imagem/icone1.png" alt="Foto de perfil">
+                            <div class="contato-info">
+                                <h3 class="nome-contato">Mario Balotelli</h3>
+                                <p class="banco-contato">Santander</p>
+                            </div>
+                        </div>
+                        <div class="contato-card">
+                            <img class="icone-contato" src="../Imagem/icone2.png" alt="Foto de perfil">
+                            <div class="contato-info">
+                                <h3 class="nome-contato">Robinho Junior</h3>
+                                <p class="banco-contato">Banco do Brasil</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+    <script>
+
+        const saldo = document.getElementById("saldo-valor");
+        const eye = document.getElementById("eye-icon");
+        const token = localStorage.getItem("token"); // JWT armazenado no login
+        const API_URL = "http://localhost:8080"; // URL do backend
+        async function fetchBalance() {
+            try {
+                const res = await fetch(`${API_URL}/bank/balance`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    const errText = await res.text();
+                    saldo.textContent = errText.includes("<html") ? "Erro de Conexão" : `Erro: ${errText}`;
+                    return;
+                }
+                const data = await res.json();
+                saldo.textContent = `R$ ${parseFloat(data.balance).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            } catch (err) {
+                console.error(err);
+                saldo.textContent = "Erro ao carregar saldo";
+            }
+        }
+
+        let visivel = true;
+        eye.onclick = () => {
+            visivel = !visivel;
+            if (visivel) {
+                saldo.textContent = "R$ 10.300,00";
+                eye.src = "https://cdn-icons-png.flaticon.com/512/709/709612.png";
+            } else {
+                saldo.textContent = "R$ ••••••";
+                eye.src = "https://cdn-icons-png.flaticon.com/512/565/565655.png";
+            }
+        };
+    </script>
+</body>
+
+</html>

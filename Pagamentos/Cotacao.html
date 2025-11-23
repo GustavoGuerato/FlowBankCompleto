@@ -19,9 +19,10 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
+
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
@@ -30,12 +31,14 @@
             width: 80%;
             max-width: 800px;
         }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
             color: black;
@@ -57,7 +60,7 @@
         <main class="conteudo">
 
             <section class="coluna-esquerda">
-                <a href="#" class="btn-voltar" aria-label="Voltar">&larr; </a>
+                <a href="./Home.html    " class="btn-voltar" aria-label="Voltar">&larr; </a>
 
                 <div class="saldo-container">
                     <div class="saldo-titulo">
@@ -149,7 +152,6 @@
                             </div>
                         </div>
 
-                        <!-- ETH -->
                         <div class="currency-card" data-type="crypto" data-symbol="ethereum" data-name="Ethereum">
                             <div class="currency-icon-wrapper">
                                 <img src="https://cdn-icons-png.flaticon.com/512/6001/6001368.png" class="crypto-icon"
@@ -165,7 +167,6 @@
                             </div>
                         </div>
 
-                        <!-- SOL -->
                         <div class="currency-card" data-type="crypto" data-symbol="solana" data-name="Solana">
                             <div class="currency-icon-wrapper">
                                 <img src="https://cryptologos.cc/logos/solana-sol-logo.png" class="crypto-icon"
@@ -197,13 +198,9 @@
         </div>
     </div>
 
-    <!-- ================================
-                 JAVASCRIPT
-    ================================= -->
+
     <script>
-        // ================================
-        // SALDO - Backend FlowBank
-        // ================================
+
         async function carregarSaldo() {
             const token = localStorage.getItem("token");
 
@@ -236,9 +233,7 @@
             }
         }
 
-        // ================================
-        // API Pública - Moedas (Frankfurter)
-        // ================================
+
         async function atualizarMoedas() {
             const url = "https://api.frankfurter.app/latest?from=BRL&to=USD,EUR,GBP";
 
@@ -264,9 +259,7 @@
             }
         }
 
-        // ================================
-        // Variação diária
-        // ================================
+
         async function atualizarVariacao(sigla, precoAtual, idVar) {
             try {
                 const ontem = new Date();
@@ -290,9 +283,6 @@
             }
         }
 
-        // ================================
-        // API Pública - Criptomoedas
-        // ================================
         async function atualizarCriptos() {
             const url =
                 "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=brl&include_24hr_change=true";

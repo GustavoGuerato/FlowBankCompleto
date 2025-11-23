@@ -68,16 +68,13 @@
                 : "https://cdn-icons-png.flaticon.com/512/565/565655.png";
         };
 
-        // Recupere o token do localStorage (ajuste se necessário)
         const token = localStorage.getItem("token");
 
         if (!token) {
             alert("Você não está logado!");
         }
 
-        // ================================
-        // 🔥 CARREGAR SALDO
-        // ================================
+
         async function carregarSaldo() {
             const response = await fetch("http://localhost:8080/bank/balance", {
                 headers: {
@@ -95,9 +92,7 @@
             saldo.textContent = saldo.dataset.real;
         }
 
-        // ================================
-        // 🔥 CARREGAR EXTRATO
-        // ================================
+
         async function carregarExtrato() {
             const response = await fetch("http://localhost:8080/bank/extract", {
                 headers: {
@@ -108,7 +103,6 @@
             const transacoes = await response.json();
             const extratoDiv = document.getElementById("extrato-lista");
 
-            // Agrupar por data
             const grupos = {};
 
             transacoes.forEach(t => {
