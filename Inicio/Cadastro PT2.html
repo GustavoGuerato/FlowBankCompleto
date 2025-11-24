@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flow Bank - Cadastro</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/css/flag-icons.min.css" />
-    
-    <link rel="stylesheet" href="Cadastro PT2.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/css/flag-icons.min.css">
+    <link rel="stylesheet" href="Cadastro PT2.css">
 </head>
 
 <body>
-    
+
     <div class="register-page">
 
         <header>
@@ -22,56 +22,72 @@
 
         <main class="register-content">
             <h1>VAMOS COMEÇAR?</h1>
-            
+
             <div class="progress-bar">
                 <div class="step active"></div>
                 <div class="step active"></div>
             </div>
 
             <div class="register-box">
-                <form>
+                <form id="form-pt2">
+
                     <div class="form-grupo">
                         <div class="input-icon-wrapper">
-                            <select class="input-form" id="pais-select" required>
+                            <select id="pais" class="input-form" required>
                                 <option value="br">Brasil</option>
                                 <option value="us">Estados Unidos</option>
                                 <option value="pt">Portugal</option>
                                 <option value="ar">Argentina</option>
                                 <option value="jp">Japão</option>
-                                </select>
-                            
+                            </select>
+
                             <span id="pais-flag" class="fi fi-br input-icon"></span>
                         </div>
                     </div>
 
                     <div class="form-grupo">
-                        <input type="tel" class="input-form" placeholder="Numero de Telefone" required>
+                        <input id="telefone" type="tel" class="input-form" placeholder="Número de Telefone" required>
                     </div>
 
                     <div class="action-buttons">
-                        <a href="#" class="btn btn-secondary">Voltar</a>
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <a href="Cadastro PT1.html" class="btn btn-secondary">Voltar</a>
+                        <button type="submit" class="btn btn-primary">Finalizar</button>
                     </div>
+
                 </form>
             </div>
         </main>
 
-    </div> <script>
-        // Seleciona o <select> e o <span> da bandeira
-        const paisSelect = document.getElementById('pais-select');
-        const paisFlag = document.getElementById('pais-flag');
+    </div>
 
-        // Adiciona um "ouvinte" que espera o usuário mudar o país
-        paisSelect.addEventListener('change', function() {
-            // Pega o código do país do <option> selecionado (ex: "br", "us")
-            // e converte para minúsculo.
-            const countryCode = this.value.toLowerCase();
-            
-            // Atualiza a classe do <span> da bandeira.
-            // Ex: "fi fi-br" ou "fi fi-us"
-            paisFlag.className = 'fi fi-' + countryCode + ' input-icon';
+    <script>
+        // Atualiza a bandeira ao trocar o país
+        document.getElementById("pais").addEventListener("change", function () {
+            document.getElementById("pais-flag").className = `fi fi-${this.value} input-icon`;
+        });
+
+        // PT2 SUBMIT
+        document.getElementById("form-pt2").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Verifica se o PT1 foi concluído
+            const token = sessionStorage.getItem("token");
+
+            if (!token) {
+                alert("Erro: Complete a etapa 1 antes.");
+                window.location.href = "Cadastro PT1.html";
+                return;
+            }
+
+            // Salva país e telefone localmente (até existir endpoint no backend)
+            sessionStorage.setItem("pais", document.getElementById("pais").value);
+            sessionStorage.setItem("telefone", document.getElementById("telefone").value);
+
+            // Finaliza cadastro e vai para o dashboard
+            window.location.href = "../Pagamentos/Home.html";
         });
     </script>
 
 </body>
+
 </html>

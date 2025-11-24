@@ -13,7 +13,16 @@
         <header>
             <div class="logo-area">
                 <img class="logo-img" src="../Imagem/Logo.png" alt="Logo">
-                <img class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+
+                <!-- Foto que abre o menu -->
+                <img id="foto-perfil" class="redondo" src="../Imagem/Portrait_Placeholder.png" alt="Foto de perfil">
+
+                <!-- MINI MENU DO PERFIL -->
+                <div id="menu-perfil" class="menu-perfil">
+                    <ul>
+                        <li id="btn-logout">Sair da conta</li>
+                    </ul>
+                </div>
             </div>
         </header>
 
@@ -26,15 +35,13 @@
                         <h2>Saldo</h2>
                         <img id="eye-icon" src="https://cdn-icons-png.flaticon.com/512/709/709612.png">
                     </div>
-                    <p id="saldo-valor">R$ 0,00</p><a href="./Transa.html">
-                        <button class="btn-transferencia">Transferências</button></a>
+                    <p id="saldo-valor">R$ 0,00</p>
+                    <button class="btn-transferencia"><a href="../Pagamentos/Enviar PIX.html">Transferências</a></button>
                 </div>
 
                 <div class="rendimentos">
-                    <div class="card-rendimento">Seu <span class="texto-azul"><a href="Cotacao.html">informe de
-                                rendimentos
-                                2025</a></span> já está
-                        disponível</div>
+                    <div class="card-rendimento">Seu <span class="texto-azul"><a href="Cotacao.html">informe de rendimentos
+                                2025</a></span> já está disponível</div>
                     <div class="card-rendimento">Seu <span class="texto-azul">informe de rendimentos 2024</span> já está
                         disponível</div>
                 </div>
@@ -90,6 +97,25 @@
     </div>
 
     <script>
+        // ======== MENU DO PERFIL + LOGOUT ========
+        const menuPerfil = document.getElementById("menu-perfil");
+        const fotoPerfil = document.getElementById("foto-perfil");
+        const btnLogout = document.getElementById("btn-logout");
+
+        // Abre e fecha o menu ao clicar na foto
+        fotoPerfil.addEventListener("click", () => {
+            menuPerfil.style.display =
+                menuPerfil.style.display === "block" ? "none" : "block";
+        });
+
+        // Logout funcional
+        btnLogout.addEventListener("click", () => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("email");
+            window.location.href = "../Inicio/Boas Vindas.html"; // ajuste o caminho se necessário
+        });
+
+
         // ELEMENTOS
         const nomeUsuario = document.getElementById("nome-usuario");
         const nomeCartao = document.getElementById("nome-cartao");
@@ -109,12 +135,10 @@
         let limiteTotal = 0;
         let consumido = 0;
 
-        // --- Função para formatar valores em BRL ---
         function formatar(valor) {
             return valor.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
         }
 
-        // --- Alternar visibilidade do saldo ---
         eye.onclick = () => {
             visivel = !visivel;
             saldoEl.textContent = visivel ? "R$ " + formatar(saldoAtual) : "••••••••";
@@ -123,19 +147,17 @@
                 : "https://cdn-icons-png.flaticon.com/512/565/565655.png";
         };
 
-        // --- Puxando dados do backend ---
         async function carregarDados() {
             const token = localStorage.getItem("token");
             const emailSalvo = localStorage.getItem("email");
 
-            // Nome do usuário
             if (emailSalvo) {
-                const nomeExtraido = emailSalvo.split("@")[0].split(".").map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(" ");
+                const nomeExtraido = emailSalvo.split("@")[0].split(".")
+                    .map(n => n.charAt(0).toUpperCase() + n.slice(1))
+                    .join(" ");
+
                 nomeUsuario.textContent = nomeExtraido;
                 nomeCartao.textContent = nomeExtraido;
-            } else {
-                nomeUsuario.textContent = "Usuário";
-                nomeCartao.textContent = "Usuário";
             }
 
             if (!token) return;
@@ -144,6 +166,7 @@
                 const response = await fetch("http://localhost:8080/bank/balance", {
                     headers: { "Authorization": "Bearer " + token }
                 });
+
                 if (!response.ok) throw new Error("Erro ao carregar saldo");
 
                 const data = await response.json();
@@ -158,7 +181,6 @@
             }
         }
 
-        // --- Atualiza valores do cartão ---
         function atualizarValores() {
             if (consumido > limiteTotal) consumido = limiteTotal;
             let restante = limiteTotal - consumido;
@@ -171,7 +193,6 @@
             valorFatura.innerHTML = '<b class="valor-vermelho">R$ ' + formatar(consumido) + '</b>';
         }
 
-        // --- Simulador de gasto ---
         botaoSimular.onclick = () => {
             let valor = Number(campoGasto.value.replace(",", "."));
             if (valor > 0) {
@@ -181,7 +202,6 @@
             }
         };
 
-        // --- Inicializa ---
         carregarDados();
     </script>
 </body>

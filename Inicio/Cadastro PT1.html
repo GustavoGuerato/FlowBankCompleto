@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    
+
     <div class="register-page">
 
         <header>
@@ -19,39 +19,68 @@
         </header>
 
         <main class="register-content">
-            <h1>VAMOS COMEÇAR?</h1>
-            
+            <h1>CRIE SUA CONTA</h1>
+
             <div class="progress-bar">
                 <div class="step active"></div>
                 <div class="step"></div>
-                </div>
+            </div>
 
             <div class="register-box">
-                <form>
+                <form id="form-pt1">
+
                     <div class="form-grupo">
-                        <input type="text" class="input-form" placeholder="Nome Completo" required>
+                        <input id="email" type="email" class="input-form" placeholder="Seu email" required>
                     </div>
 
                     <div class="form-grupo">
-                        <input type="text" class="input-form" placeholder="CPF" required>
-                    </div>
-
-                    <div class="form-grupo">
-                        <div class="input-icon-wrapper">
-                            <input type="text" class="input-form" placeholder="Data De Nascimento" 
-                                   onfocus="(this.type='date')" 
-                                   onblur="if(!this.value) { (this.type='text') }">
-                            <img src="../Imagem/calendario-icon.png" class="input-icon" alt="Calendário">
-                        </div>
+                        <input id="senha" type="password" class="input-form" placeholder="Senha" required>
                     </div>
 
                     <div class="action-buttons">
-                        <a href="#" class="btn btn-secondary">Voltar</a>
-                        <button type="submit" class="btn btn-primary">Avançar</button>
+                        <a href="login.html" class="btn btn-secondary">Voltar</a><a href="Cadastro PT2.html"><button
+                                type="submit" class="btn btn-primary">Continuar</button></a>
+
                     </div>
+
                 </form>
             </div>
         </main>
 
-    </div> </body>
+    </div>
+
+    <script>
+        document.getElementById("form-pt1").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
+
+            // Envia para o backend REAL
+            const resp = await fetch("http://localhost:8080/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email,
+                    password: senha
+                })
+            });
+
+            const data = await resp.json();
+
+            if (!resp.ok || !data.token) {
+                alert(data.message || "Erro ao registrar.");
+                return;
+            }
+
+            // Sucesso → salva token
+            sessionStorage.setItem("token", data.token);
+
+            // Vai para a etapa 2
+            window.location.href = "Cadastro PT2.html";
+        });
+    </script>
+
+</body>
+
 </html>
